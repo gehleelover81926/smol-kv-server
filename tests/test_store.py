@@ -13,3 +13,15 @@ class TestScore(unittest.TestCase):
         store = Store()
 
         self.assertIsNone(store.get("nonexistent"))
+
+    def test_delete(self):
+        store = Store()
+
+        store.set("delete", "this")
+
+        self.assertEqual(store.delete("delete"), "this");
+
+    def test_delete_nonexistent(self):
+        store = Store()
+
+        self.assertIsNone(store.delete("delete"));
