@@ -43,3 +43,5 @@ class TestScore(unittest.TestCase):
 
         self.assertTrue(store.exists("username"))
         self.assertFalse(store.exists("noone"))
+
+    
