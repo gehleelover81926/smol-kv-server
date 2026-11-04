@@ -27,3 +27,19 @@ class TestScore(unittest.TestCase):
 
         store.delete("delete");
         self.assertFalse(store.exists("delete"));
+
+    def test_overwrite(self):
+        store = Store()
+
+        store.set("username", "gehlee")
+        store.set("username", "hyein")
+
+        self.assertEqual(store.get("username"), "hyein")
+
+    def test_key_exists(self):
+        store = Store()
+
+        store.set("username", "gehlee")
+
+        self.assertTrue(store.exists("username"))
+        self.assertFalse(store.exists("noone"))
