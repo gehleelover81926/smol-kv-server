@@ -1,7 +1,11 @@
 import socket
+from parser import CommandParser
+from store import Store
 
 PORT=6380
 HOST="127.0.0.1"
+store = Store()
+parser = CommandParser(store)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -33,7 +37,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
                     # and the rest to `buffer`. then it keeps going until there's no more \n in buffer
                     line, buffer = buffer.split(b"\n", 1)
 
-                    print(line)
-                    print(buffer)
+                    command = line.decode('utf-8')
+                    response = parser.execute(command)
+                    print(response)
 
                 conn.sendall(data)
