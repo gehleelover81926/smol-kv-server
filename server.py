@@ -31,7 +31,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
                 print(data)
 
                 buffer += data
-
+                response = "";
                 while (b"\n" in buffer):
                     # split buffer only once, then assign first value to `line`
                     # and the rest to `buffer`. then it keeps going until there's no more \n in buffer
@@ -39,6 +39,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
 
                     command = line.decode('utf-8')
                     response = parser.execute(command)
-                    print(response)
 
-                conn.sendall(data)
+
+                conn.sendall((response +"\n").encode("utf-8`")) # sockets communicates in bytes so we need to encode the response to utf-8
