@@ -4,19 +4,32 @@ class CommandParser:
     def __init__(self, store: Store):
         self.store = store
 
+        # THESE ARE COMMANDS SPECIFIC FOR THE STORE
+        self.commands = ["SET", "DEL", "GET"]
     def execute(self, command: str):
-        components = command.split(maxsplit=2)
+        # SET username jynjo EX 20 - 5
+        components = command.split(maxsplit=4)
 
         if not components:
             return "ERROR cannot process empty command"
 
         keyword = components[0].upper()
+        key = ""
 
+        # in cases where its a single word command, e.g (PING)
+        if components[0] in self.commands:
+            key = components[1]
+
+        print(components)
         if keyword == "SET":
-            if (len(components) != 3):
+            if (len(components) < 3):
                 return "ERROR expects 2 arguments (key, value)"
 
-            self.store.set(components[1], components[2])
+            # SET user jyn EX 60 (seconds)
+            if "EX" in components:
+                self.store.set_ttl(key, int(components[4]))
+
+            self.store.set(key, components[2])
 
             return "OK"
 
